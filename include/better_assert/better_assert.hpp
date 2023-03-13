@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-#pragma once
+#ifndef __BETTER_ASSERT_HPP__
+#define __BETTER_ASSERT_HPP__
 
 #define _STRINGIZE_I(x) #x
 #define _STRINGIZE(x) _STRINGIZE_I(x)
@@ -32,11 +33,13 @@ inline void _better_assert(const char *       condition,
     _better_assert(condition, message.c_str(), fileline);
 }
 
-#ifdef NDEBUG
+#ifdef NO_BETTER_ASSERT
 #define better_assert(condition, message) static_cast<void>(0)
 #else
 #define better_assert(condition, message) \
     static_cast<bool>(condition)          \
         ? static_cast<void>(0)            \
         : _better_assert(#condition, message, __FILE__ ":" _STRINGIZE(__LINE__))
+#endif
+
 #endif
